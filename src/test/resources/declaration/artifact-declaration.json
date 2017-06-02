@@ -1,0 +1,316 @@
+{
+  "globalElements": [
+    {
+      "refName": "dbConfig",
+      "name": "config",
+      "declaringExtension": "Database",
+      "kind": "CONFIG",
+      "customConfigurationParameters": [],
+      "metadataProperties": {},
+      "parameterGroups": [],
+      "connection": {
+        "name": "derby-connection",
+        "declaringExtension": "Database",
+        "kind": "CONNECTION",
+        "customConfigurationParameters": [],
+        "metadataProperties": {},
+        "parameterGroups": [
+          {
+  "name": "Connection",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"poolingProfile","metadataProperties":{},"value":{"fields":{"maxPoolSize":{"text":"10","isCData":false}}}},{"name":"connectionProperties","metadataProperties":{},"value":{"fields":{"first":{"text":"propertyOne","isCData":false},"second":{"text":"propertyTwo","isCData":false}}}},{"name":"database","metadataProperties":{},"value":{"text":"target/muleEmbeddedDB","isCData":false}},{"name":"create","metadataProperties":{},"value":{"text":"true","isCData":false}}]
+}
+        ]
+      }
+    },
+    {
+      "refName": "httpListener",
+      "name": "listener-config",
+      "declaringExtension": "HTTP",
+      "kind": "CONFIG",
+      "customConfigurationParameters": [],
+      "metadataProperties": {},
+      "parameterGroups": [
+        {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"basePath","metadataProperties":{},"value":{"text":"/","isCData":false}}]
+}
+      ],
+      "connection": {
+        "name": "listener-connection",
+        "declaringExtension": "HTTP",
+        "kind": "CONNECTION",
+        "customConfigurationParameters": [],
+        "metadataProperties": {},
+        "parameterGroups": [
+          {
+  "name": "Connection",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"disableValidation","metadataProperties":{},"value":{"text":"true","isCData":false}},{"name":"tlsContext","metadataProperties":{},"value":{"fields":{"key-store":{"fields":{"path":{"text":"ssltest-keystore.jks","isCData":false},"password":{"text":"changeit","isCData":false},"keyPassword":{"text":"changeit","isCData":false}}}}}}]
+},
+          {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"host","metadataProperties":{},"value":{"text":"localhost","isCData":false}},{"name":"port","metadataProperties":{},"value":{"text":"49019","isCData":false}},{"name":"protocol","metadataProperties":{},"value":{"text":"HTTPS","isCData":false}}]
+}
+        ]
+      }
+    },
+    {
+      "refName": "httpRequester",
+      "name": "request-config",
+      "declaringExtension": "HTTP",
+      "kind": "CONFIG",
+      "customConfigurationParameters": [],
+      "metadataProperties": {},
+      "parameterGroups": [],
+      "connection": {
+        "name": "request-connection",
+        "declaringExtension": "HTTP",
+        "kind": "CONNECTION",
+        "customConfigurationParameters": [],
+        "metadataProperties": {},
+        "parameterGroups": [
+          {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"host","metadataProperties":{},"value":{"text":"localhost","isCData":false}},{"name":"port","metadataProperties":{},"value":{"text":"49020","isCData":false}},{"name":"authentication","metadataProperties":{},"value":{"fields":{"username":{"text":"user","isCData":false},"password":{"text":"pass","isCData":false}},"typeId":"org.mule.extension.http.api.request.authentication.BasicAuthentication"}}]
+},
+          {
+  "name": "Connection",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"clientSocketProperties","metadataProperties":{},"value":{"fields":{"connectionTimeout":{"text":"1000","isCData":false},"keepAlive":{"text":"true","isCData":false},"receiveBufferSize":{"text":"1024","isCData":false},"sendBufferSize":{"text":"1024","isCData":false},"clientTimeout":{"text":"1000","isCData":false},"linger":{"text":"1000","isCData":false}}}}]
+}
+        ]
+      }
+    },
+    {
+      "refName": "testFlow",
+      "name": "flow",
+      "declaringExtension": "Mule Core",
+      "kind": "FLOW",
+      "customConfigurationParameters": [],
+      "metadataProperties": {},
+      "parameterGroups": [
+        {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"initialState","metadataProperties":{},"value":{"text":"stopped","isCData":false}}]
+}
+      ],
+      "components": [
+  {
+    "name": "listener",
+    "declaringExtension": "HTTP",
+    "kind": "SOURCE",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [
+      {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"path","metadataProperties":{},"value":{"text":"testBuilder","isCData":false}},{"name":"redeliveryPolicy","metadataProperties":{},"value":{"fields":{"maxRedeliveryCount":{"text":"2","isCData":false},"useSecureHash":{"text":"true","isCData":false}}}}]
+},
+      {
+  "name": "Connection",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"reconnectionStrategy","metadataProperties":{},"value":{"fields":{"blocking":{"text":"true","isCData":false},"count":{"text":"1","isCData":false},"frequency":{"text":"0","isCData":false}},"typeId":"reconnect"}}]
+},
+      {
+  "name": "Response",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"headers","metadataProperties":{},"value":{"text":"#[{{\u0027content-type\u0027 : \u0027text/plain\u0027}}]","isCData":true}},{"name":"body","metadataProperties":{},"value":{"text":"#[\n                    %dw 1.0\n                    output application/json\n                    input payload application/xml\n                    %var baseUrl\u003d\"http://sample.cloudhub.io/api/v1.0/\"\n                    ---\n                    using (pageSize \u003d payload.getItemsResponse.PageInfo.pageSize) {\n                         links: [\n                            {\n                                href: fullUrl,\n                                rel : \"self\"\n                            }\n                         ],\n                         collection: {\n                            size: pageSize,\n                            items: payload.getItemsResponse.*Item map {\n                                id: $.id,\n                                type: $.type,\n                                name: $.name\n                            }\n                         }\n                    }\n                ","isCData":true}}]
+}
+    ],
+    "configRef": "httpListener"
+  },
+  {
+    "name": "choice",
+    "declaringExtension": "Mule Core",
+    "kind": "ROUTER",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [],
+    "routes": [
+      {
+        "name": "when",
+        "declaringExtension": "Mule Core",
+        "kind": "ROUTE",
+        "customConfigurationParameters": [],
+        "metadataProperties": {},
+        "parameterGroups": [
+          {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"expression","metadataProperties":{},"value":{"text":"#[true]","isCData":false}}]
+}
+        ],
+        "components": [
+  {
+    "name": "bulkInsert",
+    "declaringExtension": "Database",
+    "kind": "OPERATION",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [
+      {
+  "name": "Query",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"sql","metadataProperties":{},"value":{"text":"INSERT INTO PLANET(POSITION, NAME) VALUES (:position, :name)","isCData":false}},{"name":"parameterTypes","metadataProperties":{},"value":[{"fields":{"key":{"text":"name","isCData":false},"type":{"text":"VARCHAR","isCData":false}}},{"fields":{"key":{"text":"position","isCData":false},"type":{"text":"INTEGER","isCData":false}}}]}]
+}
+    ]
+  }
+]
+      },
+      {
+        "name": "otherwise",
+        "declaringExtension": "Mule Core",
+        "kind": "ROUTE",
+        "customConfigurationParameters": [],
+        "metadataProperties": {},
+        "parameterGroups": [],
+        "components": [
+  {
+    "name": "foreach",
+    "declaringExtension": "Mule Core",
+    "kind": "SCOPE",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [
+      {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"collection","metadataProperties":{},"value":{"text":"#[myCollection]","isCData":false}}]
+}
+    ],
+    "components": [
+  {
+    "name": "logger",
+    "declaringExtension": "Mule Core",
+    "kind": "OPERATION",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [
+      {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"message","metadataProperties":{},"value":{"text":"#[payload]","isCData":false}}]
+}
+    ]
+  }
+]
+  }
+]
+      }
+    ]
+  },
+  {
+    "name": "bulkInsert",
+    "declaringExtension": "Database",
+    "kind": "OPERATION",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [
+      {
+  "name": "Query",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"sql","metadataProperties":{},"value":{"text":"INSERT INTO PLANET(POSITION, NAME) VALUES (:position, :name)","isCData":false}},{"name":"parameterTypes","metadataProperties":{},"value":[{"fields":{"key":{"text":"name","isCData":false},"type":{"text":"VARCHAR","isCData":false}}},{"fields":{"key":{"text":"position","isCData":false},"type":{"text":"INTEGER","isCData":false}}}]}]
+}
+    ]
+  },
+  {
+    "name": "request",
+    "declaringExtension": "HTTP",
+    "kind": "OPERATION",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [
+      {
+  "name": "URI Settings",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"path","metadataProperties":{},"value":{"text":"/nested","isCData":false}}]
+},
+      {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"method","metadataProperties":{},"value":{"text":"POST","isCData":false}}]
+}
+    ],
+    "configRef": "httpRequester"
+  },
+  {
+    "name": "insert",
+    "declaringExtension": "Database",
+    "kind": "OPERATION",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [
+      {
+  "name": "Query",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"sql","metadataProperties":{},"value":{"text":"INSERT INTO PLANET(POSITION, NAME, DESCRIPTION) VALUES (777, \u0027Pluto\u0027, :description)","isCData":false}},{"name":"parameterTypes","metadataProperties":{},"value":[{"fields":{"key":{"text":"description","isCData":false},"type":{"text":"CLOB","isCData":false}}}]},{"name":"inputParameters","metadataProperties":{},"value":{"text":"#[{{\u0027description\u0027 : payload}}]","isCData":false}}]
+}
+    ],
+    "configRef": "dbConfig"
+  },
+  {
+    "name": "sendAndReceive",
+    "declaringExtension": "Sockets",
+    "kind": "OPERATION",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [
+      {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"target","metadataProperties":{},"value":{"text":"myVar","isCData":false}},{"name":"streamingStrategy","metadataProperties":{},"value":{"fields":{"bufferSizeIncrement":{"text":"8","isCData":false},"bufferUnit":{"text":"KB","isCData":false},"initialBufferSize":{"text":"51","isCData":false},"maxBufferSize":{"text":"1000","isCData":false}},"typeId":"repeatable-in-memory-stream"}}]
+}
+    ]
+  },
+  {
+    "name": "consume",
+    "declaringExtension": "Web Service Consumer",
+    "kind": "OPERATION",
+    "customConfigurationParameters": [],
+    "metadataProperties": {},
+    "parameterGroups": [
+      {
+  "name": "General",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"operation","metadataProperties":{},"value":{"text":"GetCitiesByCountry","isCData":false}}]
+},
+      {
+  "name": "Message",
+  "customConfigurationParameters": [],
+  "metadataProperties": {},
+  "parameters": [{"name":"attachments","metadataProperties":{},"value":{"text":"#[{}]","isCData":false}},{"name":"headers","metadataProperties":{},"value":{"text":"#[{\"headers\": {con#headerIn: \"Header In Value\",con#headerInOut: \"Header In Out Value\"}]","isCData":false}},{"name":"body","metadataProperties":{},"value":{"text":"#[payload]","isCData":false}}]
+}
+    ]
+  }
+]
+    }
+  ],
+  "customParameters": [],
+  "properties": {}
+}
