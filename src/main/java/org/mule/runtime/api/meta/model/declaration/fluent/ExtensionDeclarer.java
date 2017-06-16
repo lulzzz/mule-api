@@ -120,6 +120,19 @@ public class ExtensionDeclarer extends Declarer<ExtensionDeclaration>
     return operationDeclarer;
   }
 
+  public ExtensionDeclarer withTransformer(TransformerDeclarer declarer) {
+    declaration.addTransformer(declarer.getDeclaration());
+    return this;
+  }
+
+  public TransformerDeclarer withTransformer(String name) {
+    TransformerDeclaration transformer = new TransformerDeclaration(name);
+    final TransformerDeclarer declarer = new TransformerDeclarer(transformer);
+    withTransformer(declarer);
+
+    return declarer;
+  }
+
   /**
    * {@inheritDoc}
    */

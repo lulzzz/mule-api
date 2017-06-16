@@ -20,6 +20,7 @@ import org.mule.runtime.api.meta.model.operation.HasOperationModels;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.api.meta.model.source.HasSourceModels;
 import org.mule.runtime.api.meta.model.source.SourceModel;
+import org.mule.runtime.api.meta.model.transformer.TransformerModel;
 
 import java.util.List;
 import java.util.Optional;
@@ -141,6 +142,10 @@ public interface ExtensionModel
    */
   @Override
   List<SourceModel> getSourceModels();
+
+  List<TransformerModel> getTransformerModels();
+
+  Optional<TransformerModel> getTransformerModel(String name);
 
   /**
    * @return an immutable {@link Set} with all the object types defined by this extension

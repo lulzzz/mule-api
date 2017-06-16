@@ -46,6 +46,7 @@ public class ExtensionDeclaration extends NamedDeclaration<ExtensionDeclaration>
 
   private final SubDeclarationsContainer subDeclarations = new SubDeclarationsContainer();
   private final List<ConfigurationDeclaration> configurations = new LinkedList<>();
+  private final List<TransformerDeclaration> transformers = new LinkedList<>();
   private final Set<ImportedTypeModel> importedTypes = new TreeSet<>(comparing(t -> getTypeId(t.getImportedType()).orElse("")));
   private final Set<ExternalLibraryModel> externalLibraryModels = new TreeSet<>(comparing(ExternalLibraryModel::getName));
   private final Set<ObjectType> types = new TreeSet<>(comparing(t -> getTypeId(t).orElse("")));
@@ -79,6 +80,18 @@ public class ExtensionDeclaration extends NamedDeclaration<ExtensionDeclaration>
   }
 
   /**
+   * Returns an immutable list with the {@link TransformerDeclaration} instances
+   * that have been declared so far.
+   *
+   * @return an unmodifiable list. May be empty but will never be {@code null}
+   */
+  public List<TransformerDeclaration> getTransformers() {
+    ArrayList<TransformerDeclaration> list = new ArrayList<>(transformers);
+    sort(list, comparing(c -> c.getName()));
+    return unmodifiableList(list);
+  }
+
+  /**
    * Adds a {@link ConfigurationDeclaration}
    *
    * @param config a not {@code null} {@link ConfigurationDeclaration}
@@ -91,6 +104,22 @@ public class ExtensionDeclaration extends NamedDeclaration<ExtensionDeclaration>
     }
 
     configurations.add(config);
+    return this;
+  }
+
+  /**
+   * Adds a {@link TransformerDeclaration}
+   *
+   * @param transformer a not {@code null} {@link TransformerDeclaration}
+   * @return this declaration
+   * @throws {@link IllegalArgumentException} if {@code config} is {@code null}
+   */
+  public ExtensionDeclaration addTransformer(TransformerDeclaration transformer) {
+    if (transformer == null) {
+      throw new IllegalArgumentException("Can't add a null transformer");
+    }
+
+    transformers.add(transformer);
     return this;
   }
 
