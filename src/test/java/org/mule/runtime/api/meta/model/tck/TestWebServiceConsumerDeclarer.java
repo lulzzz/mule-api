@@ -6,9 +6,11 @@
  */
 package org.mule.runtime.api.meta.model.tck;
 
+import static org.mule.metadata.api.model.MetadataFormat.XML;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.api.meta.ExpressionSupport.REQUIRED;
 import static org.mule.runtime.api.meta.model.connection.ConnectionManagementType.NONE;
+import org.mule.metadata.api.builder.BaseTypeBuilder;
 import org.mule.runtime.api.meta.Category;
 import org.mule.runtime.api.meta.MuleVersion;
 import org.mule.runtime.api.meta.model.ExternalLibraryModel;
@@ -92,6 +94,8 @@ public class TestWebServiceConsumerDeclarer extends TestBaseDeclarer {
 
   public static final String CONNECTION_PROVIDER_NAME = "connectionProvider";
   public static final String CONNECTION_PROVIDER_DESCRIPTION = "my connection provider";
+  public static final String TRANSFORMER_NAME = "wsdl2Envelope";
+  public static final String TRANSFORMER_DESCRIPTION = "WSDL 2 Envelope";
 
   public static ExternalLibraryModel EXTERNAL_LIBRARY_MODEL = ExternalLibraryModel.builder()
       .withName("wss")
@@ -100,6 +104,9 @@ public class TestWebServiceConsumerDeclarer extends TestBaseDeclarer {
       .withRequiredClassName("org.my.Library")
       .build();
 
+  public static class Envelope {
+
+  }
 
   private final ExtensionDeclarer extensionDeclarer;
 
@@ -184,6 +191,11 @@ public class TestWebServiceConsumerDeclarer extends TestBaseDeclarer {
     parameterGroup.withRequiredParameter(URL).describedAs(URL_DESCRIPTION).ofType(getStringType());
     parameterGroup.withOptionalParameter(PORT).describedAs(PORT_DESCRIPTION).ofType(getNumberType())
         .defaultingTo(DEFAULT_PORT);
+
+    extensionDeclarer.withTransformer(TRANSFORMER_NAME)
+        .describedAs(TRANSFORMER_DESCRIPTION)
+        .withSourceType(BaseTypeBuilder.create(XML).stringType().build())
+        .withOutput(typeBuilder.objectType().id(Envelope.class.getName()).build());
 
     return extensionDeclarer;
   }
