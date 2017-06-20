@@ -20,6 +20,7 @@ import org.mule.runtime.api.meta.model.parameter.ParameterModel;
 import org.mule.runtime.api.meta.model.parameter.ParameterizedModel;
 import org.mule.runtime.api.meta.model.source.HasSourceModels;
 import org.mule.runtime.api.meta.model.source.SourceModel;
+import org.mule.runtime.api.meta.model.transformer.TransformerModel;
 
 /**
  * Navigates a {@link ExtensionModel} and invokes methods when important
@@ -64,6 +65,7 @@ public abstract class ExtensionWalker {
     ifContinue(() -> walkConnectionProviders(extensionModel));
     ifContinue(() -> walkSources(extensionModel));
     ifContinue(() -> walkOperations(extensionModel));
+    ifContinue(() -> walkTransformers(extensionModel));
   }
 
   /**
@@ -162,6 +164,8 @@ public abstract class ExtensionWalker {
    */
   protected void onParameter(ParameterizedModel owner, ParameterGroupModel groupModel, ParameterModel model) {}
 
+  protected void onTransformer(TransformerModel transformerModel) {}
+
   private void walkSources(HasSourceModels model) {
     for (SourceModel source : model.getSourceModels()) {
       if (stopped) {
@@ -234,10 +238,18 @@ public abstract class ExtensionWalker {
     }
   }
 
+  private void walkTransformers(ExtensionModel extensionModel) {
+    for (TransformerModel transformer : extensionModel.getTransformerModels()) {
+      if (stopped) {
+        return;
+      }
+      onTransformer(transformer);
+    }
+  }
+
   private void ifContinue(Runnable action) {
     if (!stopped) {
       action.run();
     }
   }
-
 }

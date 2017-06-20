@@ -18,6 +18,7 @@ import org.mule.runtime.api.meta.model.declaration.fluent.ParameterizedDeclarati
 import org.mule.runtime.api.meta.model.declaration.fluent.RouterDeclaration;
 import org.mule.runtime.api.meta.model.declaration.fluent.ScopeDeclaration;
 import org.mule.runtime.api.meta.model.declaration.fluent.SourceDeclaration;
+import org.mule.runtime.api.meta.model.declaration.fluent.TransformerDeclaration;
 import org.mule.runtime.api.meta.model.declaration.fluent.WithOperationsDeclaration;
 import org.mule.runtime.api.meta.model.declaration.fluent.WithSourcesDeclaration;
 
@@ -64,6 +65,7 @@ public abstract class DeclarationWalker {
     ifContinue(() -> walkConnectionProviders(extensionDeclaration));
     ifContinue(() -> walkSources(extensionDeclaration));
     ifContinue(() -> walkOperations(extensionDeclaration));
+    ifContinue(() -> walkTransformers(extensionDeclaration));
   }
 
   /**
@@ -163,6 +165,8 @@ public abstract class DeclarationWalker {
   protected void onParameter(ParameterizedDeclaration owner, ParameterGroupDeclaration parameterGroup,
                              ParameterDeclaration declaration) {}
 
+  protected void onTransformer(TransformerDeclaration transformer) {}
+
   private void walkSources(WithSourcesDeclaration declaration) {
     for (Object source : declaration.getMessageSources()) {
       if (stopped) {
@@ -222,6 +226,16 @@ public abstract class DeclarationWalker {
       }
 
       ifContinue(() -> walkParameters(declaration));
+    }
+  }
+
+  private void walkTransformers(ExtensionDeclaration extension) {
+    for (TransformerDeclaration transformer : extension.getTransformers()) {
+      if (stopped) {
+        return;
+      }
+
+      onTransformer(transformer);
     }
   }
 
