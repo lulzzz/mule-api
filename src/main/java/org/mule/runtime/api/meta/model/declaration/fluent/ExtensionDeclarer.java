@@ -120,11 +120,23 @@ public class ExtensionDeclarer extends Declarer<ExtensionDeclaration>
     return operationDeclarer;
   }
 
+  /**
+   * Adds the transformer described in the given {@code declarer}
+   *
+   * @param declarer a {@link TransformerDeclarer}
+   * @return {@code this} declarer
+   */
   public ExtensionDeclarer withTransformer(TransformerDeclarer declarer) {
     declaration.addTransformer(declarer.getDeclaration());
     return this;
   }
 
+  /**
+   * Adds a transformer of the given name
+   *
+   * @param name a non blank name
+   * @return a {@link TransformerDeclarer} which allows describing the created transformer
+   */
   public TransformerDeclarer withTransformer(String name) {
     TransformerDeclaration transformer = new TransformerDeclaration(name);
     final TransformerDeclarer declarer = new TransformerDeclarer(transformer);

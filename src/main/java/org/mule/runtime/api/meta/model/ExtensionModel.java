@@ -7,9 +7,9 @@
 package org.mule.runtime.api.meta.model;
 
 import org.mule.metadata.api.model.ObjectType;
-import org.mule.runtime.api.meta.MuleVersion;
 import org.mule.runtime.api.meta.Category;
 import org.mule.runtime.api.meta.DescribedObject;
+import org.mule.runtime.api.meta.MuleVersion;
 import org.mule.runtime.api.meta.NamedObject;
 import org.mule.runtime.api.meta.model.config.ConfigurationModel;
 import org.mule.runtime.api.meta.model.connection.ConnectionProviderModel;
@@ -143,8 +143,20 @@ public interface ExtensionModel
   @Override
   List<SourceModel> getSourceModels();
 
+  /**
+   * Returns the {@link TransformerModel transformer models}
+   * available for this extension. Each transformer is guaranteed to have a unique name.
+   *
+   * @return an immutable {@link List} with the available {@link TransformerModel configurationModels}.
+   */
   List<TransformerModel> getTransformerModels();
 
+  /**
+   * Returns the {@link TransformerModel} that matches the given name.
+   *
+   * @param name case sensitive configuration name
+   * @return an {@link Optional} {@link TransformerModel}
+   */
   Optional<TransformerModel> getTransformerModel(String name);
 
   /**

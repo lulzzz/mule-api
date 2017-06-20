@@ -165,6 +165,12 @@ public abstract class DeclarationWalker {
   protected void onParameter(ParameterizedDeclaration owner, ParameterGroupDeclaration parameterGroup,
                              ParameterDeclaration declaration) {}
 
+  /**
+   * Invoked when a {@link TransformerDeclaration} is found in the
+   * traversed {@code extensionDeclaration}
+   *
+   * @param transformer a {@link TransformerDeclaration}
+   */
   protected void onTransformer(TransformerDeclaration transformer) {}
 
   private void walkSources(WithSourcesDeclaration declaration) {

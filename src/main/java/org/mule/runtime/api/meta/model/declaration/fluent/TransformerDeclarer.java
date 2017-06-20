@@ -12,9 +12,19 @@ import org.mule.runtime.api.meta.model.ModelProperty;
 
 import java.util.stream.Stream;
 
+/**
+ * Allows configuring a {@link TransformerDeclaration} through a fluent API
+ *
+ * @since 1.0
+ */
 public class TransformerDeclarer extends Declarer<TransformerDeclaration>
     implements HasModelProperties<TransformerDeclarer> {
 
+  /**
+   * Creates a new instance
+   *
+   * @param declaration the declaration object to be configured
+   */
   public TransformerDeclarer(TransformerDeclaration declaration) {
     super(declaration);
   }
@@ -30,12 +40,25 @@ public class TransformerDeclarer extends Declarer<TransformerDeclaration>
     return this;
   }
 
+  /**
+   * Declares that the given {@code sourceTypes} are accepted as source types by the
+   * described transformer
+   *
+   * @param sourceTypes the source types represented as {@link MetadataType} instances
+   * @return {@code this} declarer
+   */
   public TransformerDeclarer withSourceType(MetadataType... sourceTypes) {
     checkArgument(sourceTypes != null && sourceTypes.length > 0, "sourceTypes cannot be null nor empty");
     Stream.of(sourceTypes).forEach(declaration::addSourceType);
     return this;
   }
 
+  /**
+   * Declares that the declared transformer produces values of the given {@code outputType}
+   *
+   * @param outputType a {@link MetadataType}
+   * @return {@code this} declarer
+   */
   public TransformerDeclarer withOutput(MetadataType outputType) {
     declaration.setOutputType(outputType);
     return this;

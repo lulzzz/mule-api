@@ -164,6 +164,12 @@ public abstract class ExtensionWalker {
    */
   protected void onParameter(ParameterizedModel owner, ParameterGroupModel groupModel, ParameterModel model) {}
 
+  /**
+   * Invoked when a {@link TransformerModel} is found in the
+   * traversed {@code extensionModel}
+   *
+   * @param transformerModel a {@link TransformerModel}
+   */
   protected void onTransformer(TransformerModel transformerModel) {}
 
   private void walkSources(HasSourceModels model) {
