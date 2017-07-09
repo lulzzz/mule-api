@@ -19,7 +19,7 @@ import java.util.Optional;
  *
  * @since 1.0
  */
-public final class ConfigurationElementDeclaration extends ParameterizedElementDeclaration
+public class ConfigurationElementDeclaration extends ParameterizedElementDeclaration
     implements GlobalElementDeclaration {
 
   private ConnectionElementDeclaration connection;

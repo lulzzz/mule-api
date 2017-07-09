@@ -20,7 +20,7 @@ import java.io.Serializable;
 public abstract class EnrichableElementDeclarer<D extends EnrichableElementDeclarer, T extends EnrichableElementDeclaration>
     extends BaseElementDeclarer<T> {
 
-  EnrichableElementDeclarer(T declaration) {
+  public EnrichableElementDeclarer(T declaration) {
     super(declaration);
   }
 

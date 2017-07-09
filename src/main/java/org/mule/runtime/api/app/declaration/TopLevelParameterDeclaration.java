@@ -19,8 +19,7 @@ import java.util.Optional;
  *
  * @since 1.0
  */
-public final class TopLevelParameterDeclaration extends EnrichableElementDeclaration
-    implements ReferableElementDeclaration, GlobalElementDeclaration {
+public final class TopLevelParameterDeclaration extends EnrichableElementDeclaration implements GlobalElementDeclaration {
 
   private String elementName;
   private ParameterObjectValue value;

@@ -20,7 +20,7 @@ public class ScopeElementDeclarer<E extends ScopeElementDeclarer, D extends Scop
   /**
    * Creates a new instance of {@link E}
    */
-  ScopeElementDeclarer(D declaration) {
+  public ScopeElementDeclarer(D declaration) {
     super(declaration);
   }
 
