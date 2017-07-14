@@ -23,6 +23,7 @@ import org.mule.runtime.api.meta.model.declaration.fluent.FunctionDeclarer;
 import org.mule.runtime.api.meta.model.declaration.fluent.OperationDeclarer;
 import org.mule.runtime.api.meta.model.declaration.fluent.ParameterGroupDeclarer;
 import org.mule.runtime.api.meta.model.declaration.fluent.SourceDeclarer;
+import org.mule.runtime.api.meta.model.display.LayoutModel;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
 
 import java.io.Serializable;
@@ -131,11 +132,15 @@ public class TestWebServiceConsumerDeclarer extends TestBaseDeclarer {
             .withModelProperty(CONFIGURATION_MODEL_PROPERTY);
 
     ParameterGroupDeclarer parameterGroup = config.onParameterGroup(CONFIG_PARAMETER_GROUP);
-    parameterGroup.withRequiredParameter(ADDRESS).describedAs(SERVICE_ADDRESS).ofType(getStringType());
-    parameterGroup.withRequiredParameter(PORT).describedAs(SERVICE_PORT).ofType(getStringType());
-    parameterGroup.withRequiredParameter(SERVICE).describedAs(SERVICE_NAME).ofType(getStringType());
+    parameterGroup.withRequiredParameter(ADDRESS).describedAs(SERVICE_ADDRESS).ofType(getStringType())
+        .withLayout(LayoutModel.builder().build());
+    parameterGroup.withRequiredParameter(PORT).describedAs(SERVICE_PORT).ofType(getStringType())
+        .withLayout(LayoutModel.builder().build());
+    parameterGroup.withRequiredParameter(SERVICE).describedAs(SERVICE_NAME).ofType(getStringType())
+        .withLayout(LayoutModel.builder().build());
     parameterGroup.withRequiredParameter(WSDL_LOCATION).describedAs(URI_TO_FIND_THE_WSDL).ofType(getStringType())
         .withExpressionSupport(NOT_SUPPORTED)
+        .withLayout(LayoutModel.builder().build())
         .withModelProperty(PARAMETER_MODEL_PROPERTY);
 
     OperationDeclarer operation =
@@ -145,8 +150,10 @@ public class TestWebServiceConsumerDeclarer extends TestBaseDeclarer {
     operation.withOutputAttributes().ofType(getStringType());
 
     parameterGroup = operation.onParameterGroup(OPERATION_PARAMETER_GROUP);
-    parameterGroup.withRequiredParameter(OPERATION).describedAs(THE_OPERATION_TO_USE).ofType(getStringType());
-    parameterGroup.withOptionalParameter(MTOM_ENABLED).describedAs(MTOM_DESCRIPTION).ofType(getBooleanType()).defaultingTo(true);
+    parameterGroup.withRequiredParameter(OPERATION).describedAs(THE_OPERATION_TO_USE).ofType(getStringType())
+        .withLayout(LayoutModel.builder().build());
+    parameterGroup.withOptionalParameter(MTOM_ENABLED).describedAs(MTOM_DESCRIPTION).ofType(getBooleanType()).defaultingTo(true)
+        .withLayout(LayoutModel.builder().build());
 
     operation = extensionDeclarer.withOperation(BROADCAST).describedAs(BROADCAST_DESCRIPTION);
     operation.withOutput().ofType(typeBuilder.voidType().build());
@@ -159,12 +166,12 @@ public class TestWebServiceConsumerDeclarer extends TestBaseDeclarer {
             .stringType()
             .id(String.class
                 .getName()))
-        .build());
+        .build()).withLayout(LayoutModel.builder().build());
 
     parameterGroup.withOptionalParameter(MTOM_ENABLED).describedAs(MTOM_DESCRIPTION).ofType(getBooleanType())
-        .defaultingTo(true);
+        .defaultingTo(true).withLayout(LayoutModel.builder().build());
     parameterGroup.withRequiredParameter(CALLBACK).describedAs(CALLBACK_DESCRIPTION).ofType(getObjectType(OperationModel.class))
-        .withExpressionSupport(REQUIRED);
+        .withExpressionSupport(REQUIRED).withLayout(LayoutModel.builder().build());
 
     operation = extensionDeclarer.withOperation(ARG_LESS).describedAs(HAS_NO_ARGS);
     operation.withOutput().ofType(getNumberType());
@@ -172,7 +179,7 @@ public class TestWebServiceConsumerDeclarer extends TestBaseDeclarer {
 
     FunctionDeclarer function = extensionDeclarer.withFunction(FUNCTION_NAME).describedAs(FUNCTION_DESCRIPTION);
     function.onParameterGroup(DEFAULT_GROUP_NAME).withRequiredParameter(USERNAME).describedAs(USERNAME_DESCRIPTION)
-        .ofType(getStringType());
+        .ofType(getStringType()).withLayout(LayoutModel.builder().build());
     function.withOutput().ofType(getNumberType());
 
     ConnectionProviderDeclarer connectionProvider =
@@ -182,8 +189,10 @@ public class TestWebServiceConsumerDeclarer extends TestBaseDeclarer {
             .withExternalLibrary(EXTERNAL_LIBRARY_MODEL);
 
     parameterGroup = connectionProvider.onParameterGroup(CONNECTION_PROVIDER_PARAMETER_GROUP);
-    parameterGroup.withRequiredParameter(USERNAME).describedAs(USERNAME_DESCRIPTION).ofType(getStringType());
-    parameterGroup.withRequiredParameter(PASSWORD).describedAs(PASSWORD_DESCRIPTION).ofType(getStringType());
+    parameterGroup.withRequiredParameter(USERNAME).describedAs(USERNAME_DESCRIPTION).ofType(getStringType())
+        .withLayout(LayoutModel.builder().build());
+    parameterGroup.withRequiredParameter(PASSWORD).describedAs(PASSWORD_DESCRIPTION).ofType(getStringType())
+        .withLayout(LayoutModel.builder().build());
 
     SourceDeclarer sourceDeclarer =
         extensionDeclarer.withMessageSource(LISTENER).describedAs(LISTEN_DESCRIPTION).withModelProperty(SOURCE_MODEL_PROPERTY);
@@ -192,9 +201,10 @@ public class TestWebServiceConsumerDeclarer extends TestBaseDeclarer {
     sourceDeclarer.withOutputAttributes().ofType(getObjectType(Serializable.class));
 
     parameterGroup = sourceDeclarer.onParameterGroup(SOURCE_PARAMETER_GROUP);
-    parameterGroup.withRequiredParameter(URL).describedAs(URL_DESCRIPTION).ofType(getStringType());
+    parameterGroup.withRequiredParameter(URL).describedAs(URL_DESCRIPTION).ofType(getStringType())
+        .withLayout(LayoutModel.builder().build());
     parameterGroup.withOptionalParameter(PORT).describedAs(PORT_DESCRIPTION).ofType(getNumberType())
-        .defaultingTo(DEFAULT_PORT);
+        .defaultingTo(DEFAULT_PORT).withLayout(LayoutModel.builder().build());
 
     return extensionDeclarer;
   }
