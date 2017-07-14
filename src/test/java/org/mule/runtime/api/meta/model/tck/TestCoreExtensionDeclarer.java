@@ -13,6 +13,7 @@ import org.mule.runtime.api.meta.model.XmlDslModel;
 import org.mule.runtime.api.meta.model.declaration.fluent.ExtensionDeclarer;
 import org.mule.runtime.api.meta.model.declaration.fluent.RouterDeclarer;
 import org.mule.runtime.api.meta.model.declaration.fluent.ScopeDeclarer;
+import org.mule.runtime.api.meta.model.display.LayoutModel;
 
 /**
  * A simple pojo containing reference information for making test around a {@link ExtensionDeclarer}
@@ -66,7 +67,8 @@ public class TestCoreExtensionDeclarer extends TestBaseDeclarer {
     ScopeDeclarer scope = extensionDeclarer.withScope(FOREACH_OPERATION_NAME);
     scope.withOutput().ofType(getVoidType());
     scope.withOutputAttributes().ofType(getAttributesType());
-    scope.onDefaultParameterGroup().withOptionalParameter(FOREACH_EXPRESSION_PARAMETER_NAME).ofType(getStringType());
+    scope.onDefaultParameterGroup().withOptionalParameter(FOREACH_EXPRESSION_PARAMETER_NAME).ofType(getStringType())
+        .withLayout(LayoutModel.builder().build());
 
     return extensionDeclarer;
   }
