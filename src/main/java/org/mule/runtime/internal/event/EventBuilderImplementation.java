@@ -15,6 +15,7 @@ import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.security.SecurityContext;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,9 +29,9 @@ public class EventBuilderImplementation implements Event.Builder {
   private String correlationId;
   private GroupCorrelation groupCorrelation;
   private Message message;
-  private Map<String, TypedValue<?>> variables;
-  private Map<String, TypedValue<?>> parameters;
-  private Map<String, TypedValue<?>> properties;
+  private Map<String, TypedValue<?>> variables = new HashMap<>();
+  private Map<String, TypedValue<?>> parameters = new HashMap<>();;
+  private Map<String, TypedValue<?>> properties = new HashMap<>();;
   private Error error;
   private EventContext eventContext;
   private SecurityContext securityContext;

@@ -8,6 +8,7 @@ package org.mule.runtime.internal.event;
 
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Optional.ofNullable;
+import static org.mule.runtime.api.util.Preconditions.checkNotNull;
 import static org.mule.runtime.internal.el.BindingContextUtils.NULL_BINDING_CONTEXT;
 import org.mule.runtime.api.el.BindingContext;
 import org.mule.runtime.api.event.Event;
@@ -43,6 +44,10 @@ public class EventImplementation implements Event {
                              Map<String, TypedValue<?>> parameters, Map<String, TypedValue<?>> properties,
                              Optional<Error> error, EventContext eventContext, SecurityContext securityContext,
                              GroupCorrelation groupCorrelation, String correlationId) {
+    checkNotNull(variables != null, "variables cannot be null");
+    checkNotNull(parameters != null, "parameters cannot be null");
+    checkNotNull(properties != null, "properties cannot be null");
+
     this.message = message;
     this.variables = variables;
     this.parameters = parameters;
