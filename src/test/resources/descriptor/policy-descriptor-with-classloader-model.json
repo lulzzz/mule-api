@@ -9,7 +9,7 @@
     }
   },
   "classLoaderModelLoaderDescriptor": {
-    "id": "maven",
+    "id": "mule",
     "attributes": {
       "exportedPackages": [
         "org.mule.extension.api",

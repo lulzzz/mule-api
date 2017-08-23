@@ -93,7 +93,7 @@ public class MulePolicyModelJsonSerializerTestCase extends AbstractMuleArtifactM
   private void assertClassLoaderModel(MulePolicyModel deserialize) {
     assertThat(deserialize.getClassLoaderModelLoaderDescriptor().isPresent(), is(true));
     final MuleArtifactLoaderDescriptor extensionModelDescriptor = deserialize.getClassLoaderModelLoaderDescriptor().get();
-    assertThat(extensionModelDescriptor.getId(), is("maven"));
+    assertThat(extensionModelDescriptor.getId(), is("mule"));
     assertThat(extensionModelDescriptor.getAttributes().size(), is(2));
     final Object exportedPackages = extensionModelDescriptor.getAttributes().get("exportedPackages");
     assertThat(exportedPackages, is(instanceOf(List.class)));
