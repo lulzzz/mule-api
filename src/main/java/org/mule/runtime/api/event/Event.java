@@ -8,6 +8,7 @@ package org.mule.runtime.api.event;
 
 import org.mule.runtime.api.el.BindingContext;
 import org.mule.runtime.api.message.Error;
+import org.mule.runtime.api.message.GroupCorrelation;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.security.Authentication;
@@ -44,6 +45,13 @@ public interface Event {
   Optional<Authentication> getAuthentication();
 
   /**
+   * Returns the correlation metadata of this message. See {@link GroupCorrelation}.
+   *
+   * @return the correlation metadata of this message.
+   */
+  Optional<GroupCorrelation> getGroupCorrelation();
+
+  /**
    * When a mule component throws an error then an {@code Error} object gets generated with all the data associated to the error.
    *
    * This field will only contain a value within the error handler defined to handle errors. After the error handler is executed
@@ -64,7 +72,8 @@ public interface Event {
   String getCorrelationId();
 
   /**
-   * @return the context applicable to all events created from the same root {@link Event} from a source.
+   * @return the context applicable to all events created from the same root {@link Event} from a so
+   * urce.
    */
   EventContext getContext();
 
